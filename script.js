@@ -3,8 +3,8 @@ const nav = document.querySelector('.nav');
 
 // Make the editorial voice personal: the visitor should feel that Gilles is speaking.
 const copyReplacements = [
-  ['Pourquoi Gilles ?', 'Qui je suis'],
-  ['Pourquoi Gilles', 'Qui je suis'],
+  ['Pourquoi Gilles ?', 'Qui suis-je ?'],
+  ['Pourquoi Gilles', 'Qui suis-je ?'],
   ['Gilles d’abord.', 'Je m’implique personnellement.'],
   ['Gilles apporte l’expérience, le terrain, la proximité, la méthode, l’exécution, le management et le pilotage.', 'J’apporte mon expérience, ma présence sur le terrain, ma proximité, ma méthode, l’exécution, le management et le pilotage.'],
   ['Les preuves disponibles aujourd’hui sont l’expérience de Gilles, son parcours de Direction Commerciale, sa présence terrain et son rattachement à un réseau national.', 'Mes preuves aujourd’hui reposent sur mon expérience, mon parcours en Direction Commerciale, ma présence sur le terrain et mon appartenance à un réseau national.'],
@@ -16,7 +16,7 @@ const copyReplacements = [
 
 // The navigation is outside <main>, so update its label explicitly.
 document.querySelectorAll('.nav a').forEach(link => {
-  if (link.textContent.trim() === 'Pourquoi Gilles') link.textContent = 'Qui je suis';
+  if (['Pourquoi Gilles', 'Qui je suis'].includes(link.textContent.trim())) link.textContent = 'Qui suis-je ?';
 });
 
 const editorialRoot = document.querySelector('main');
