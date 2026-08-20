@@ -1,6 +1,19 @@
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.nav');
 
+// Desktop-only visual refinement: center the full execution flow in the page
+// without changing the swipeable mobile/tablet behavior.
+const desktopFlowStyle = document.createElement('style');
+desktopFlowStyle.textContent = `
+  @media (min-width: 981px) {
+    .execution-flow {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+`;
+document.head.appendChild(desktopFlowStyle);
+
 toggle?.addEventListener('click', () => {
   const open = nav.classList.toggle('open');
   toggle.setAttribute('aria-expanded', String(open));
