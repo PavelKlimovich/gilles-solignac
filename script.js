@@ -3,8 +3,8 @@ const nav = document.querySelector('.nav');
 
 // Make the editorial voice personal: the visitor should feel that Gilles is speaking.
 const copyReplacements = [
-  ['Pourquoi Gilles ?', 'Mon expérience'],
-  ['Pourquoi Gilles', 'Mon expérience'],
+  ['Pourquoi Gilles ?', 'Qui je suis'],
+  ['Pourquoi Gilles', 'Qui je suis'],
   ['Gilles d’abord.', 'Je m’implique personnellement.'],
   ['Gilles apporte l’expérience, le terrain, la proximité, la méthode, l’exécution, le management et le pilotage.', 'J’apporte mon expérience, ma présence sur le terrain, ma proximité, ma méthode, l’exécution, le management et le pilotage.'],
   ['Les preuves disponibles aujourd’hui sont l’expérience de Gilles, son parcours de Direction Commerciale, sa présence terrain et son rattachement à un réseau national.', 'Mes preuves aujourd’hui reposent sur mon expérience, mon parcours en Direction Commerciale, ma présence sur le terrain et mon appartenance à un réseau national.'],
@@ -13,6 +13,11 @@ const copyReplacements = [
   ['Voir la fiche officielle de Gilles', 'Voir ma fiche officielle'],
   ['Voir le profil LinkedIn de Gilles', 'Me retrouver sur LinkedIn']
 ];
+
+// The navigation is outside <main>, so update its label explicitly.
+document.querySelectorAll('.nav a').forEach(link => {
+  if (link.textContent.trim() === 'Pourquoi Gilles') link.textContent = 'Qui je suis';
+});
 
 const editorialRoot = document.querySelector('main');
 if (editorialRoot) {
@@ -29,8 +34,6 @@ if (editorialRoot) {
   });
 }
 
-// Desktop-only visual refinement: center the full execution flow in the page
-// without changing the swipeable mobile/tablet behavior.
 const siteStyle = document.createElement('style');
 siteStyle.textContent = `
   @media (min-width: 981px) {
@@ -38,6 +41,18 @@ siteStyle.textContent = `
       justify-content: center;
       width: 100%;
     }
+  }
+
+  .linkedin-button {
+    background: #0A66C2 !important;
+    border-color: #0A66C2 !important;
+    color: #fff !important;
+  }
+  .linkedin-button:hover,
+  .linkedin-button:focus-visible {
+    background: #004182 !important;
+    border-color: #004182 !important;
+    color: #fff !important;
   }
 
   .legal-footer-links {
@@ -126,7 +141,6 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// Add legal navigation without disturbing the existing footer composition.
 const footerRight = document.querySelector('.footer-right');
 if (footerRight) {
   const legalLinks = document.createElement('div');
@@ -138,8 +152,6 @@ if (footerRight) {
   footerRight.prepend(legalLinks);
 }
 
-// Privacy-friendly notice: the current site does not install analytics or advertising cookies.
-// localStorage is used only to remember that the visitor has read this information.
 const COOKIE_NOTICE_KEY = 'gs_cookie_notice_seen_v1';
 const notice = document.createElement('aside');
 notice.className = 'cookie-notice';
