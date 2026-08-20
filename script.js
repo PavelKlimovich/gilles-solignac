@@ -1,10 +1,13 @@
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.nav');
 
-// Horizontal Gilles identity: light version in the white header, adapted dark treatment in the footer.
+// Use the official PNG logos stored directly in the repository.
 document.querySelectorAll('.brand').forEach(brand => {
   const isFooter = brand.classList.contains('footer-brand');
-  brand.innerHTML = `<img class="gilles-logo${isFooter ? ' gilles-logo-dark' : ''}" src="logo-gilles-horizontal-light.webp" alt="Gilles Solignac — Directeur Commercial externalisé">`;
+  const logoSrc = isFooter
+    ? 'logo-gilles-solignac-horizontal-fond-sombre.png'
+    : 'logo-gilles-solignac-horizontal.png';
+  brand.innerHTML = `<img class="gilles-logo${isFooter ? ' gilles-logo-dark' : ''}" src="${logoSrc}" alt="Gilles Solignac — Directeur Commercial externalisé">`;
 });
 
 const copyReplacements = [
@@ -28,7 +31,7 @@ siteStyle.textContent=`
   .gilles-logo{display:block;width:clamp(210px,27vw,410px);height:auto;max-height:56px;object-fit:contain;object-position:left center}
   footer{background:#141E23!important;overflow:hidden}
   .footer-brand{background:#141E23}
-  .footer-brand .gilles-logo{width:clamp(260px,38vw,520px);max-height:78px;filter:invert(1) hue-rotate(180deg);mix-blend-mode:screen}
+  .footer-brand .gilles-logo{width:clamp(260px,38vw,520px);height:auto;max-height:78px;object-fit:contain;object-position:left center;filter:none;mix-blend-mode:normal}
   @media(max-width:980px){.gilles-logo{width:250px;max-height:48px}.footer-brand .gilles-logo{width:330px;max-width:100%;max-height:68px}}
   @media(max-width:640px){.gilles-logo{width:205px;max-width:calc(100vw - 92px);max-height:42px}.footer-brand .gilles-logo{width:min(330px,100%);max-height:62px}}
   @media(min-width:981px){.execution-flow{justify-content:center;width:100%}}
