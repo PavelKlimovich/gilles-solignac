@@ -1,6 +1,11 @@
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.nav');
 
+// Use Gilles' visual identity in the header and footer.
+document.querySelectorAll('.brand').forEach(brand => {
+  brand.innerHTML = '<img class="gilles-logo" src="logo-gilles-solignac.svg" alt="Gilles Solignac — Directeur Commercial externalisé">';
+});
+
 // Make the editorial voice personal: the visitor should feel that Gilles is speaking.
 const copyReplacements = [
   ['Pourquoi Gilles ?', 'Qui suis-je ?'],
@@ -17,8 +22,6 @@ const copyReplacements = [
 document.querySelectorAll('.nav a').forEach(link => {
   if (['Pourquoi Gilles', 'Qui je suis'].includes(link.textContent.trim())) link.textContent = 'Qui suis-je ?';
 });
-
-// Remove the internal editorial note from the public site.
 document.querySelector('.verification-note')?.remove();
 
 const editorialRoot = document.querySelector('main');
@@ -26,21 +29,20 @@ if (editorialRoot) {
   const walker = document.createTreeWalker(editorialRoot, NodeFilter.SHOW_TEXT);
   const textNodes = [];
   while (walker.nextNode()) textNodes.push(walker.currentNode);
-
   textNodes.forEach(node => {
     let value = node.nodeValue;
-    copyReplacements.forEach(([from, to]) => {
-      value = value.split(from).join(to);
-    });
+    copyReplacements.forEach(([from, to]) => { value = value.split(from).join(to); });
     node.nodeValue = value;
   });
 }
 
 const siteStyle = document.createElement('style');
 siteStyle.textContent = `
-  @media (min-width: 981px) {
-    .execution-flow { justify-content: center; width: 100%; }
-  }
+  .brand { display:flex; align-items:center; }
+  .gilles-logo { display:block; width:auto; height:54px; max-width:220px; object-fit:contain; object-position:left center; }
+  .footer-brand .gilles-logo { height:72px; max-width:280px; }
+  @media (max-width:640px){ .gilles-logo{height:46px;max-width:175px}.footer-brand .gilles-logo{height:62px;max-width:235px} }
+  @media (min-width:981px) { .execution-flow { justify-content: center; width: 100%; } }
   .linkedin-button { background: #0A66C2 !important; border-color: #0A66C2 !important; color: #fff !important; }
   .linkedin-button:hover, .linkedin-button:focus-visible { background: #004182 !important; border-color: #004182 !important; color: #fff !important; }
   .legal-footer-links { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
@@ -72,13 +74,9 @@ document.querySelectorAll('.nav a').forEach(link => {
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
   });
 }, { threshold: 0.12 });
-
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 const footerRight = document.querySelector('.footer-right');
@@ -96,11 +94,7 @@ notice.setAttribute('role', 'dialog');
 notice.setAttribute('aria-label', 'Information sur les cookies');
 notice.innerHTML = `<div class="cookie-notice__copy"><strong>Respect de votre vie privée</strong><p>Ce site n’utilise actuellement aucun cookie publicitaire ni outil de mesure d’audience. Un stockage local sert uniquement à mémoriser votre choix. <a href="politique-cookies.html">En savoir plus</a>.</p></div><button class="cookie-notice__button" type="button">J’ai compris</button>`;
 document.body.appendChild(notice);
-
-try {
-  if (!localStorage.getItem(COOKIE_NOTICE_KEY)) requestAnimationFrame(() => notice.classList.add('is-visible'));
-} catch (error) { notice.classList.add('is-visible'); }
-
+try { if (!localStorage.getItem(COOKIE_NOTICE_KEY)) requestAnimationFrame(() => notice.classList.add('is-visible')); } catch (error) { notice.classList.add('is-visible'); }
 notice.querySelector('.cookie-notice__button')?.addEventListener('click', () => {
   try { localStorage.setItem(COOKIE_NOTICE_KEY, '1'); } catch (error) {}
   notice.classList.remove('is-visible');
