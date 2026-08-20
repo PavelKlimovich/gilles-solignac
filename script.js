@@ -1,6 +1,34 @@
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.nav');
 
+// Make the editorial voice personal: the visitor should feel that Gilles is speaking.
+const copyReplacements = [
+  ['Pourquoi Gilles ?', 'Mon expérience'],
+  ['Pourquoi Gilles', 'Mon expérience'],
+  ['Gilles d’abord.', 'Je m’implique personnellement.'],
+  ['Gilles apporte l’expérience, le terrain, la proximité, la méthode, l’exécution, le management et le pilotage.', 'J’apporte mon expérience, ma présence sur le terrain, ma proximité, ma méthode, l’exécution, le management et le pilotage.'],
+  ['Les preuves disponibles aujourd’hui sont l’expérience de Gilles, son parcours de Direction Commerciale, sa présence terrain et son rattachement à un réseau national.', 'Mes preuves aujourd’hui reposent sur mon expérience, mon parcours en Direction Commerciale, ma présence sur le terrain et mon appartenance à un réseau national.'],
+  ['Gilles intervient à Tours, Joué-lès-Tours et plus largement en Indre-et-Loire.', 'J’interviens à Tours, Joué-lès-Tours et plus largement en Indre-et-Loire.'],
+  ['Son ancrage local nourrit sa connaissance des entreprises, des dirigeants et des réalités commerciales du territoire.', 'Mon ancrage local nourrit ma connaissance des entreprises, des dirigeants et des réalités commerciales du territoire.'],
+  ['Voir la fiche officielle de Gilles', 'Voir ma fiche officielle'],
+  ['Voir le profil LinkedIn de Gilles', 'Me retrouver sur LinkedIn']
+];
+
+const editorialRoot = document.querySelector('main');
+if (editorialRoot) {
+  const walker = document.createTreeWalker(editorialRoot, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+  textNodes.forEach(node => {
+    let value = node.nodeValue;
+    copyReplacements.forEach(([from, to]) => {
+      value = value.split(from).join(to);
+    });
+    node.nodeValue = value;
+  });
+}
+
 // Desktop-only visual refinement: center the full execution flow in the page
 // without changing the swipeable mobile/tablet behavior.
 const siteStyle = document.createElement('style');
@@ -97,19 +125,6 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-document.getElementById('contactForm')?.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const button = event.currentTarget.querySelector('button');
-  const original = button.textContent;
-  button.textContent = 'Merci — demande enregistrée';
-  button.disabled = true;
-  setTimeout(() => {
-    button.textContent = original;
-    button.disabled = false;
-    event.currentTarget.reset();
-  }, 2600);
-});
 
 // Add legal navigation without disturbing the existing footer composition.
 const footerRight = document.querySelector('.footer-right');
